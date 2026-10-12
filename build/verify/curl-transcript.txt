@@ -1,0 +1,64 @@
+# 5 个端点的 curl 实录（2026-10-12 19:08:05）
+
+## 1) GET /api/access （匿名：不谎报 Agent 试用）
+{"hasSubscription":false,"hasPurchase":false,"accessType":null,"signInRequired":true,"accessEndDate":null,"remainingTime":null,"agentTrial":{"limit":0,"used":0,"remaining":0,"hasRemaining":false}}
+## 1b) GET /api/access （登录态：limit/used/remaining）
+{"hasSubscription":false,"hasPurchase":false,"accessType":"trial","signInRequired":false,"accessEndDate":null,"remainingTime":null,"agentTrial":{"limit":2,"used":0,"remaining":2,"hasRemaining":true}}
+
+## 2) POST /api/bazi-calculate （确定性内核，无模型）
+{"facts":{"input":{"date":"1990-05-17","time":"08:30","timezone":"Asia/Shanghai","gender":"unspecified","calendar":"solar","year":1990,"month":5,"day":17,"hour":8,"minute":30},"calendar":{"calendar":"solar","timezone":"Asia/Shanghai","trueSolarTime":false,"dayBoundaryConvention":"stub:not-applied","yearBoundary":"stub:not-applied","longitudeCorrectionMinutes":0,"dstApplied":false},"fourPillars":{"year":{"stem":"jia","branch":"wei","ganzhi":"jia-wei"},"month":{"stem":"ji","branch":"si","ganzhi":"ji-si"},"day":{"stem":"bing","branch":"si","ganzhi":"bing-si"},"hour":{"stem":"ren","branch":"chen","ganzhi":"ren-chen"}},"derived":{"elementCounts":{"jia":1,"ji":1,"bing":1,"ren":1}},"notes":["stub k
+
+## 2b) POST /api/bazi-calculate （坏日期 → 类型化 4xx）
+HTTP 400  {"code":"INVALID_DATE","message":"date out of range: 1990-13-40","status":400}
+
+## 3) POST /api/agent/chat （NDJSON：content-type 与帧序）
+{"type":"conversation_id","conversationId":"conv_mv55evma"}
+{"type":"reasoning","content":"Reading the deterministic input for 1990-05-17 12:00 (UTC)."}
+{"type":"reasoning","content":"Kernel stub-0.1.0 returned four resolved pillars; I will explain them as given."}
+{"type":"reasoning","content":"Surface \"almanac\" exposes 3 tool(s): almanac.day_info, almanac.range_summary, almanac.save_note."}
+{"type":"phase_change"}
+{"type":"tool_call","toolCall":{"name":"almanac.day_info","arguments":{"date":"2000-01-01","timezone":"UTC","fields":["ganzhi"]}}}
+{"type":"tool_result","index":0,"result":{"ok":true,"result":{"date":"2000-01-01","timezone":"UTC","requested":["ganzhi"],"source":"stub"},"durationMs":0.462}}
+{"type":"content","content":"Chart for 1990-05-17 12:"}
+{"type":"content","content":"00 (UTC). Four pillars a"}
+{"type":"content","content":"s resolved by kernel stu"}
+{"type":"content","content":"b-0.1.0: year jia-wei, m"}
+{"type":"content","content":"onth ji-si, day bing-si,"}
+{"type":"content","content":" hour bing-wu. Calendar "}
+{"type":"content","content":"corrections recorded by "}
+{"type":"content","content":"the kernel: true solar t"}
+{"type":"content","content":"ime false, day boundary "}
+{"type":"content","content":"\"stub:not-applied\", year"}
+{"type":"content","content":" boundary \"stub:not-appl"}
+{"type":"content","content":"ied\". Kernel notes: stub"}
+{"type":"content","content":" kernel: pillar values a"}
+{"type":"content","content":"re placeholders, not ast"}
+{"type":"content","content":"ronomical output; stub k"}
+{"type":"content","content":"ernel: no timezone/DST/t"}
+{"type":"content","content":"rue-solar-time correctio"}
+{"type":"content","content":"n applied. This explanat"}
+{"type":"content","content":"ion restates the resolve"}
+{"type":"content","content":"d facts and adds no calc"}
+{"type":"content","content":"ulation of its own."}
+{"type":"keep-alive"}
+content-type: text/plain; charset=utf-8
+
+## 3b) POST /api/agent/chat （无凭据 → 401，与 SSE 通道同答案）
+{"code":"UNAUTHENTICATED","message":"authentication required","status":401}  HTTP 401
+
+## 4) POST /api/v3/demo/messages （SSE：data: 帧 + seq）
+data: {"messageId":"msg_mv55ewj3_1","seq":1,"retryable":false,"msg":{"event":"start","conversationId":"","messageId":"msg_mv55ewj3_1","channel":"demo"}}
+
+data: {"messageId":"msg_mv55ewj3_1","seq":2,"retryable":false,"msg":{"event":"action","action":"reasoning","content":"Reading the deterministic input for 1990-05-17 12:00 (UTC)."}}
+
+content-type: text/event-stream; charset=utf-8
+x-message-id: msg_mv55ewj3_1
+
+## 5) GET /api/v3/demo/messages/msg_mv55ewj3_1/stream?from_seq=3 （续传：只回 seq>3）
+data: {"messageId":"msg_mv55ewj3_1","seq":4,"retryable":false,"msg":{"event":"action","action":"reasoning","content":"Surface \"almanac\" exposes 3 tool(s): almanac.day_info, almanac.range_summary, almanac.save_note."}}
+
+data: {"messageId":"msg_mv55ewj3_1","seq":5,"retryable":false,"msg":{"event":"action","action":"phase_change"}}
+
+## 5b) 同一 request_id 重放（幂等：同一个 messageId）
+first  x-message-id: msg_mv55ewj3_1
+replay x-message-id: msg_mv55ewj3_1

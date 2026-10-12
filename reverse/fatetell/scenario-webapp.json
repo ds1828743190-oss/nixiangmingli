@@ -1,0 +1,16 @@
+{
+  "browser": { "mode": "launch", "executable_path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "headless": true },
+  "start_url": { "url": "https://web.fatetell.com/", "query": [] },
+  "environment": { "viewport": { "width": 1280, "height": 900, "device_scale_factor": 1 }, "locale": "en-US", "timezone": "UTC", "color_scheme": "light", "reduced_motion": "reduce", "service_workers": "block" },
+  "actions": [
+    { "step_id": "onboarding_settle", "action": "wait_for_timeout", "duration_ms": 6000 }
+  ],
+  "storage": { "cookies": [], "local_storage": [], "session_storage": [] },
+  "secrets": [],
+  "capture": {
+    "after_each_step": [],
+    "at_end": ["url", "dom", "accessibility", "storage", "screenshot"],
+    "events": ["console", "page-errors", "network", "websockets", "workers"],
+    "network": { "request_body": false, "response_body": false, "header_values": true }
+  }
+}

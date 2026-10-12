@@ -1,0 +1,22 @@
+{
+  "browser": { "mode": "launch", "executable_path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "headless": true },
+  "start_url": { "url": "https://fatetell.com/shop", "query": [] },
+  "environment": { "viewport": { "width": 1280, "height": 900, "device_scale_factor": 1 }, "locale": "en-US", "timezone": "UTC", "color_scheme": "light", "reduced_motion": "reduce", "service_workers": "block" },
+  "actions": [
+    { "step_id": "shop_settle", "action": "wait_for_timeout", "duration_ms": 5000 },
+    { "step_id": "app_page", "action": "goto", "destination": { "url": "https://fatetell.com/app", "query": [] }, "wait_until": "load" },
+    { "step_id": "app_settle", "action": "wait_for_timeout", "duration_ms": 3500 },
+    { "step_id": "ai_fortune_teller", "action": "goto", "destination": { "url": "https://fatetell.com/ai-fortune-teller", "query": [] }, "wait_until": "load" },
+    { "step_id": "aft_settle", "action": "wait_for_timeout", "duration_ms": 3500 },
+    { "step_id": "bazi_calculator", "action": "goto", "destination": { "url": "https://fatetell.com/bazi-calculator", "query": [] }, "wait_until": "load" },
+    { "step_id": "calc_settle", "action": "wait_for_timeout", "duration_ms": 3500 }
+  ],
+  "storage": { "cookies": [], "local_storage": [], "session_storage": [] },
+  "secrets": [],
+  "capture": {
+    "after_each_step": ["dom", "accessibility", "url"],
+    "at_end": ["url", "screenshot"],
+    "events": ["console", "page-errors", "network", "websockets"],
+    "network": { "request_body": false, "response_body": false, "header_values": true }
+  }
+}

@@ -1,0 +1,32 @@
+# REA (Reverse Engineer Anything) MCP bridge for DeepSeek Harness.
+#
+# Registered through the shipped @deepseek-ai/dsh-mcp-client plugin, which is a
+# configuration-only bundle (no Host/Client entry files are needed).
+# Tools are exposed to the model as: mcp__rea__<tool_name>
+#
+# Launcher is pinned to absolute paths on purpose: the DSH runtime ships Node
+# but no npm/npx, and stdio children inherit a scrubbed environment, so no
+# PATH-based runner (`npx`, `pnpm dlx`) may be relied on here.
+- insert:
+    - id: rea-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: rea
+        transport: stdio
+        command: /Users/xiaolv/.dsh/dsh-runtimes/dsh-primary-runtime/dependencies/node/bin/node
+        args:
+          - /Users/xiaolv/Documents/deepseek-harness/default-workspace/rea/toolchain/node_modules/rea-agents/scripts/rea.mjs
+          - mcp
+        # Keep the profile booting even if REA cannot start; absence of
+        # mcp__rea__* tools is then diagnosable instead of fatal.
+        failOnStartupError: false
+        # Website analysis + browser capture legitimately exceed the 60s default.
+        toolCallTimeoutMs: 300000
+        env:
+          # REA advertises 170 tools; the compact schema profile shrinks the
+          # per-request tool-definition payload. REA still validates full input.
+          REA_MCP_INPUT_SCHEMA_PROFILE: compact
+          # Website analysis needs a Chrome-family browser; point REA at the
+          # installed Google Chrome instead of relying on discovery.
+          REA_BROWSER_EXECUTABLE: /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+          REA_LOG_LEVEL: warn

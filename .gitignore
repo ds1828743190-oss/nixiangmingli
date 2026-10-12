@@ -1,0 +1,21 @@
+# 抓取的第三方资源（JS bundle / DOM / 截图 / 网络响应）
+# 属于对方内容，不适合再分发；见 NOTICE.md 与 MANIFEST-evidence.md
+reverse/**/raw/
+reverse/**/raw
+
+# 构建与运行产物
+dist/
+data/
+node_modules/
+*.db
+*.db-wal
+*.db-shm
+
+# REA 工具链（216MB 第三方安装；可用 pnpm add rea-agents@6.4.0 复现）
+rea/
+rea-mcp-bundle/node_modules/
+
+# 本地临时
+.DS_Store
+*.log
+.rea-login-profile/

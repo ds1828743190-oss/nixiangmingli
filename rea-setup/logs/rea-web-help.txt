@@ -1,0 +1,82 @@
+########## capture-browser-scenario
+rea capture-browser-scenario — Run one bounded Playwright browser scenario and return Evidence
+
+Usage: rea capture-browser-scenario <inputJson>
+
+Arguments:
+  inputJson  Inline browser scenario JSON or JSON file path
+
+Global Options:
+  --filter-output <keys>              Filter output by key paths (e.g. foo,bar.baz,a[0,3])
+  --format <toon|json|yaml|md|jsonl>  Output format
+  --full-output                       Show full output envelope
+  --help                              Show help
+  --llms, --llms-full                 Print LLM-readable manifest
+  --schema                            Show JSON Schema for command
+  --token-count                       Print token count of output (instead of output)
+  --token-limit <n>                   Limit output to n tokens
+  --token-offset <n>                  Skip first n tokens of output
+########## analyze-web-bundle
+rea analyze-web-bundle — Capture and statically analyze a page bundle, defaulting to the selected target origin
+
+Usage: rea analyze-web-bundle <endpoint> <targetId> [options]
+
+Arguments:
+  endpoint  Configured loopback CDP HTTP endpoint
+  targetId  Target ID from list-browser-targets
+
+Options:
+  --allowed-origins <array>  Optional exact-origin filter
+  --observation-ms <number>  Observation duration in milliseconds (default: 500)
+  --fetch-source-maps        Fetch source maps referenced by captured scripts
+
+Global Options:
+  --filter-output <keys>              Filter output by key paths (e.g. foo,bar.baz,a[0,3])
+  --format <toon|json|yaml|md|jsonl>  Output format
+  --full-output                       Show full output envelope
+  --help                              Show help
+  --llms, --llms-full                 Print LLM-readable manifest
+  --schema                            Show JSON Schema for command
+  --token-count                       Print token count of output (instead of output)
+  --token-limit <n>                   Limit output to n tokens
+  --token-offset <n>                  Skip first n tokens of output
+########## export-web-scripts
+rea export-web-scripts — Export retained website scripts into an absent directory for static JavaScript analysis
+
+Usage: rea export-web-scripts <capturePath> <outputDirectory>
+
+Arguments:
+  capturePath      Absolute path to saved page or scenario capture JSON
+  outputDirectory  Absolute absent directory for verified scripts and manifest
+
+Global Options:
+  --filter-output <keys>              Filter output by key paths (e.g. foo,bar.baz,a[0,3])
+  --format <toon|json|yaml|md|jsonl>  Output format
+  --full-output                       Show full output envelope
+  --help                              Show help
+  --llms, --llms-full                 Print LLM-readable manifest
+  --schema                            Show JSON Schema for command
+  --token-count                       Print token count of output (instead of output)
+  --token-limit <n>                   Limit output to n tokens
+  --token-offset <n>                  Skip first n tokens of output
+########## list-browser-targets
+rea list-browser-targets — List page targets from a selected loopback CDP browser, optionally filtered by origin
+
+Usage: rea list-browser-targets <endpoint> [options]
+
+Arguments:
+  endpoint  Configured loopback CDP HTTP endpoint
+
+Options:
+  --allowed-origins <array>  Optional exact-origin filter
+
+Global Options:
+  --filter-output <keys>              Filter output by key paths (e.g. foo,bar.baz,a[0,3])
+  --format <toon|json|yaml|md|jsonl>  Output format
+  --full-output                       Show full output envelope
+  --help                              Show help
+  --llms, --llms-full                 Print LLM-readable manifest
+  --schema                            Show JSON Schema for command
+  --token-count                       Print token count of output (instead of output)
+  --token-limit <n>                   Limit output to n tokens
+  --token-offset <n>                  Skip first n tokens of output

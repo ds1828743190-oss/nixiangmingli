@@ -1,0 +1,23 @@
+{
+  "name": "shensha-bazi-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Evidence-backed teardown of FateTell / FateMaster.AI, plus a zero-dependency implementation of the same architecture: deterministic BaZi kernel, resumable streams, signed sessions.",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "test": "node --test 'build/kernel/test/*.test.mjs' 'build/skeleton/test/*.test.mjs'",
+    "test:kernel": "node --test 'build/kernel/test/*.test.mjs'",
+    "test:skeleton": "node --test 'build/skeleton/test/*.test.mjs'",
+    "test:stub": "SHENSHA_KERNEL=stub node --test 'build/skeleton/test/*.test.mjs'",
+    "test:sqlite": "SHENSHA_STORE=sqlite node --test 'build/skeleton/test/*.test.mjs'",
+    "acceptance": "node build/verify/acceptance.mjs",
+    "crosscheck": "node build/verify/kernel-crosscheck.mjs",
+    "verify": "npm run test && npm run acceptance && npm run crosscheck",
+    "start": "node build/skeleton/src/server.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

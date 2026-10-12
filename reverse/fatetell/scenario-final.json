@@ -1,0 +1,20 @@
+{
+  "browser": { "mode": "launch", "executable_path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "headless": true },
+  "start_url": { "url": "https://fatetell.com/archive", "query": [] },
+  "environment": { "viewport": { "width": 1280, "height": 900, "device_scale_factor": 1 }, "locale": "en-US", "timezone": "UTC", "color_scheme": "light", "reduced_motion": "reduce", "service_workers": "block" },
+  "actions": [
+    { "step_id": "archive_settle", "action": "wait_for_timeout", "duration_ms": 5000 },
+    { "step_id": "about", "action": "goto", "destination": { "url": "https://fatetell.com/aboutUs", "query": [] }, "wait_until": "load" },
+    { "step_id": "about_settle", "action": "wait_for_timeout", "duration_ms": 3000 },
+    { "step_id": "terms", "action": "goto", "destination": { "url": "https://fatetell.com/terms", "query": [] }, "wait_until": "load" },
+    { "step_id": "terms_settle", "action": "wait_for_timeout", "duration_ms": 3000 }
+  ],
+  "storage": { "cookies": [], "local_storage": [], "session_storage": [] },
+  "secrets": [],
+  "capture": {
+    "after_each_step": ["dom", "accessibility", "url"],
+    "at_end": ["url", "screenshot"],
+    "events": ["console", "page-errors", "network"],
+    "network": { "request_body": false, "response_body": false, "header_values": false }
+  }
+}
